@@ -34,6 +34,19 @@ A higher -a value will tolerate lower accuracy and a lower -f value will tolerat
 
 Note that if you make changes to the script you must delete the older data files if you want those same videos analysed with the new options.
 
+================BINARIES=================
+If you copied this tool from GitHub it might not include the necessary binaries.
+Please download the full version from https://tailorandwayne.com/gpmd2csv/ or compile the binaries yourself and reproduce the following structure
+
+GPMD2CSV/
+  GPMD2CSV.bat
+  bin/
+    ffmpeg.exe
+    gopro2gpx.exe
+    gopro2json.exe
+    gpmd2csv.exe
+    gps2kml.exe
+
 ===============CREATED BY================
 Juan Irache
 
