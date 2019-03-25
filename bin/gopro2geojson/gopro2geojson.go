@@ -14,6 +14,8 @@ import (
 func main() {
 	inName := flag.String("i", "", "Required: telemetry file to read")
 	outName := flag.String("o", "", "Required: geo json file to write")
+	accuracyThreshold := flag.Int("a", 1000, "Optional: GPS accuracy threshold, defaults to 1000")
+	fixThreshold := flag.Int("f", 3, "Optional: GPS fix state. Defaults to 0 (no fix), can be 2 (2D) or 3 (3D)")
 	flag.Parse()
 
 	if *inName == "" {
@@ -53,24 +55,26 @@ func main() {
 
 		// process until t.Time
 		t_prev.FillTimes(t.Time.Time)
-		telems := t_prev.ShitJson()
+		if t_prev.GpsAccuracy.Accuracy < uint16(*accuracyThreshold) && t_prev.GpsFix.F >= uint32(*fixThreshold) {
+			telems := t_prev.ShitJson()
 
-		for i, _ := range telems {
-			if telems[i].GpsAccuracy == 0 || telems[i].GpsAccuracy == 9999 {
-				// Invalid GPS accuracy
-				continue
-			}
+			for i, _ := range telems {
+				if telems[i].GpsAccuracy == 0 || telems[i].GpsAccuracy == 9999 {
+					// Invalid GPS accuracy
+					continue
+				}
 
-			// longitude, latitude
-			longLat := []float64{telems[i].Longitude, telems[i].Latitude}
-			coordinates = append(coordinates, longLat)
-			// timestamp
-			var relGap int64 = 0
-			if len(absoluteUtcMicroSec) > 0 {
-				relGap = telems[i].TS - absoluteUtcMicroSec[0]
+				// longitude, latitude
+				longLat := []float64{telems[i].Longitude, telems[i].Latitude}
+				coordinates = append(coordinates, longLat)
+				// timestamp
+				var relGap int64 = 0
+				if len(absoluteUtcMicroSec) > 0 {
+					relGap = telems[i].TS - absoluteUtcMicroSec[0]
+				}
+				relativeMicroSec = append(relativeMicroSec, relGap)
+				absoluteUtcMicroSec = append(absoluteUtcMicroSec, telems[i].TS)
 			}
-			relativeMicroSec = append(relativeMicroSec, relGap)
-			absoluteUtcMicroSec = append(absoluteUtcMicroSec, telems[i].TS)
 		}
 
 		*t_prev = *t
