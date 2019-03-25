@@ -1,3 +1,5 @@
+// made by https://github.com/gki/gopro-utils/tree/feature/add_geojson_export
+
 package main
 
 import (
