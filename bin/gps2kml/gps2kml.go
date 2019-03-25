@@ -102,7 +102,7 @@ func main() {
 			telems := t_prev.ShitJson()
 			for i, _ := range telems {
 				var TempGpsData string
-				TempGpsData = "<Placemark>\n<Point><coordinates>" + floattostr(telems[i].Longitude) + "," + floattostr(telems[i].Latitude) + "," + floattostr(telems[i].Altitude) + "</coordinates></Point><TimeStamp><when>" + time.Unix(telems[i].TS/1000/1000, telems[i].TS%(1000*1000)*1000).UTC().String() + "</when></TimeStamp>" + "\n</Placemark>\n"
+				TempGpsData = "<Placemark>\n<Point><coordinates>" + floattostr(telems[i].Longitude) + "," + floattostr(telems[i].Latitude) + "," + floattostr(telems[i].Altitude) + "</coordinates></Point><TimeStamp><when>" + time.Unix(telems[i].TS/1000/1000, telems[i].TS%(1000*1000)*1000).UTC().Format("2006-01-02T15:04:05.000Z") + "</when></TimeStamp>" + "\n</Placemark>\n"
 				gpsFile.WriteString(TempGpsData)
 			}
 		}
