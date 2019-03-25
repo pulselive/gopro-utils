@@ -8,6 +8,7 @@ import (
 	"github.com/JuanIrache/gopro-utils/telemetry"//getting rid of some bugs
 	"io"
 	"os"
+	"time"
 	"strconv"
 )
 
@@ -31,18 +32,24 @@ func main() {
 		<Document>
 		<Placemark>
 		<Point><coordinates>Longitude,Latitude,Altitude</coordinates></Point>
+		<TimeStamp>
+     		<when>Timestamp</when>
+		</TimeStamp>
 		</Placemark>
 
 		[LOOP]
 		<Placemark>
 		<Point><coordinates>LON,LAT,ALT</coordinates></Point>
+		<TimeStamp>
+     		<when>Timestamp</when>
+		</TimeStamp>
 		</Placemark>
 		[/LOOP]
 
 		</Document>
 		</kml>
 	*/
-	var gpsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://earth.google.com/kml/2.0\">\n<Document>\n<Placemark>\n<Point><coordinates>Longitude,Latitude,Altitude</coordinates></Point>\n</Placemark>\n"
+	var gpsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://earth.google.com/kml/2.0\">\n<Document>\n"
 	gpsFile, err := os.Create(*outName)
 	gpsFile.WriteString(gpsData)
 	defer gpsFile.Close()
@@ -63,33 +70,44 @@ func main() {
 
 	// currently processing sentence
 	t := &telemetry.TELEM{}
+	t_prev := &telemetry.TELEM{}
 
 	for {
 		t, err = telemetry.Read(telemFile)
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			fmt.Println(err)
+		if err != nil && err != io.EOF {
+			fmt.Println("Error reading telemetry file", err)
 			os.Exit(1)
-		}
-
-		if t == nil {
+		} else if err == io.EOF || t == nil {
 			break
 		}
-		/*
-			<Placemark>
-			<Point><coordinates>LON,LAT,ALT</coordinates></Point>
-			</Placemark>
-		*/
-		if t.GpsAccuracy.Accuracy < uint16(*accuracyThreshold) && t.GpsFix.F >= uint32(*fixThreshold) {
-			for i, _ := range t.Gps {
+
+		// first full, guess it's about a second
+		if t_prev.IsZero() {
+			*t_prev = *t
+			t.Clear()
+			continue
+		}
+
+		// process until t.Time
+		t_prev.FillTimes(t.Time.Time)
+
+		// 		<Placemark>
+		// 		<Point><coordinates>LON,LAT,ALT</coordinates></Point>
+		// 		<TimeStamp>
+		// 			<when>Timestamp</when>
+		// 		</TimeStamp>
+		// 		</Placemark>
+
+		if t_prev.GpsAccuracy.Accuracy < uint16(*accuracyThreshold) && t_prev.GpsFix.F >= uint32(*fixThreshold) {
+			telems := t_prev.ShitJson()
+			for i, _ := range telems {
 				var TempGpsData string
-				TempGpsData = "<Placemark>\n<Point><coordinates>" + floattostr(t.Gps[i].Longitude) + "," + floattostr(t.Gps[i].Latitude) + "," + floattostr(t.Gps[i].Altitude) + "</coordinates></Point>" + "\n</Placemark>\n"
+				TempGpsData = "<Placemark>\n<Point><coordinates>" + floattostr(telems[i].Longitude) + "," + floattostr(telems[i].Latitude) + "," + floattostr(telems[i].Altitude) + "</coordinates></Point><TimeStamp><when>" + time.Unix(telems[i].TS/1000/1000, telems[i].TS%(1000*1000)*1000).UTC().String() + "</when></TimeStamp>" + "\n</Placemark>\n"
 				gpsFile.WriteString(TempGpsData)
 			}
 		}
 
+		*t_prev = *t
 		t = &telemetry.TELEM{}
 	}
 	gpsFile.WriteString("</Document>\n</kml>")
