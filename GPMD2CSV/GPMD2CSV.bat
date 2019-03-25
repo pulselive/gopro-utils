@@ -118,7 +118,7 @@ START "" /WAIT /MIN "%ScriptDir%bin\gpmd2csv" -i "%temp%\GPMD2CSV.bin" -o "%Outp
 START "" /WAIT /MIN "%ScriptDir%bin\gopro2json" -i "%temp%\GPMD2CSV.bin" -o "%OutputDir%\%~n1.json"
 START "" /WAIT /MIN "%ScriptDir%bin\gps2kml" -i "%temp%\GPMD2CSV.bin" -a %AccuracyFilter% -f %FixFilter% -o "%OutputDir%\%~n1.kml"
 START "" /WAIT /MIN "%ScriptDir%bin\gopro2gpx" -i "%temp%\GPMD2CSV.bin" -a %AccuracyFilter% -f %FixFilter% -o "%OutputDir%\%~n1.gpx"
-START "" /WAIT /MIN "%ScriptDir%bin\gopro2json" -i "%temp%\GPMD2CSV.bin" -a %AccuracyFilter% -f %FixFilter% -o "%OutputDir%\%~n1.geojson"
+START "" /WAIT /MIN "%ScriptDir%bin\gopro2geojson" -i "%temp%\GPMD2CSV.bin" -a %AccuracyFilter% -f %FixFilter% -o "%OutputDir%\%~n1.geojson"
 @ECHO OFF
 :: Deletes the two temp files that were created
 DEL "%temp%\GPMD2CSV.bin"
