@@ -134,7 +134,9 @@ func main() {
 		if strings.Contains(selected, "t") {
 			milliseconds := seconds*1000
 			tempCsv = append(tempCsv, []string{strconv.Itoa(milliseconds),floattostr(float64(t_prev.Temp.Temp))})
-			////////////////////Gps
+		}
+		////////////////////Gps
+		if strings.Contains(selected, "g") {
 			for i, _ := range t_prev.Gps {
 				if (initialMilliseconds <= 0) && (t_prev.Gps[i].TS > 0) { initialMilliseconds = float64(t_prev.Gps[i].TS) / 1000 }
 				milliseconds := (float64(t_prev.Gps[i].TS) / 1000) - initialMilliseconds
