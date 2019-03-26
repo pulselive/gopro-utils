@@ -119,20 +119,20 @@ func main() {
 		/////////////////////Accelerometer
 		if strings.Contains(selected, "a") {
 			for i, _ := range t_prev.Accl {
-				milliseconds := float64(seconds*1000)+float64(((float64(1000)/float64(len(t_prev.Accl)))*float64(i)))
+				milliseconds := float64(((float64(1000)/float64(len(t_prev.Accl)))*float64(i)))
 				acclCsv = append(acclCsv, []string{floattostr(milliseconds),floattostr(t_prev.Accl[i].X),floattostr(t_prev.Accl[i].Y),floattostr(t_prev.Accl[i].Z)})
 			}
 		}
 		/////////////////////Gyroscope
 		if strings.Contains(selected, "y") {
 			for i, _ := range t_prev.Gyro {
-				milliseconds := float64(seconds*1000)+float64(((float64(1000)/float64(len(t_prev.Gyro)))*float64(i)))
+				milliseconds := float64(((float64(1000)/float64(len(t_prev.Gyro)))*float64(i)))
 				gyroCsv = append(gyroCsv, []string{floattostr(milliseconds),floattostr(t_prev.Gyro[i].X),floattostr(t_prev.Gyro[i].Y),floattostr(t_prev.Gyro[i].Z)})
 			}
 		}
 		////////////////////Temperature
 		if strings.Contains(selected, "t") {
-			milliseconds := seconds*1000
+			milliseconds := 0
 			tempCsv = append(tempCsv, []string{strconv.Itoa(milliseconds),floattostr(float64(t_prev.Temp.Temp))})
 		}
 		////////////////////Gps
