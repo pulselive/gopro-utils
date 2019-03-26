@@ -96,8 +96,8 @@ func main() {
 	t := &telemetry.TELEM{}
 	t_prev := &telemetry.TELEM{}
 
-	seconds := -1
-	var initialMilliseconds float64
+	var seconds float64 = -2
+	var initialMilliseconds float64 = 0
 	for {
 		t, err = telemetry.Read(telemFile)
 		if err != nil {
@@ -113,35 +113,38 @@ func main() {
 
 		t_prev.FillTimes(t.Time.Time)
 
-		// fmt.Println(t_prev)
+		//fmt.Println(t.Time.Time)
 
 		///////////////////////////////////////////////////////////////////Modified to save CSV
+		////////////////////Gps
+		if strings.Contains(selected, "g") {
+			for i, _ := range t_prev.Gps {
+				if (initialMilliseconds <= 0) && (t_prev.Gps[i].TS > 0) { initialMilliseconds = float64(t_prev.Gps[i].TS) / 1000 }
+				milliseconds := (float64(t_prev.Gps[i].TS) / 1000) - initialMilliseconds
+				if i == 0 {	//if GPS time we can use it for other sensors, otherwise keep seconds guess
+					seconds = milliseconds/1000
+				}
+				gpsCsv = append(gpsCsv, []string{floattostr(milliseconds),floattostr(t_prev.Gps[i].Latitude),floattostr(t_prev.Gps[i].Longitude),floattostr(t_prev.Gps[i].Altitude),floattostr(t_prev.Gps[i].Speed),floattostr(t_prev.Gps[i].Speed3D),int64tostr(t_prev.Gps[i].TS),strconv.Itoa(int(t_prev.GpsAccuracy.Accuracy)),strconv.Itoa(int(t_prev.GpsFix.F))})
+			}
+		}
 		/////////////////////Accelerometer
 		if strings.Contains(selected, "a") {
 			for i, _ := range t_prev.Accl {
-				milliseconds := float64(((float64(1000)/float64(len(t_prev.Accl)))*float64(i)))
+				milliseconds := float64(seconds*1000)+float64(((float64(1000)/float64(len(t_prev.Accl)))*float64(i)))
 				acclCsv = append(acclCsv, []string{floattostr(milliseconds),floattostr(t_prev.Accl[i].X),floattostr(t_prev.Accl[i].Y),floattostr(t_prev.Accl[i].Z)})
 			}
 		}
 		/////////////////////Gyroscope
 		if strings.Contains(selected, "y") {
 			for i, _ := range t_prev.Gyro {
-				milliseconds := float64(((float64(1000)/float64(len(t_prev.Gyro)))*float64(i)))
+				milliseconds := float64(seconds*1000)+float64(((float64(1000)/float64(len(t_prev.Gyro)))*float64(i)))
 				gyroCsv = append(gyroCsv, []string{floattostr(milliseconds),floattostr(t_prev.Gyro[i].X),floattostr(t_prev.Gyro[i].Y),floattostr(t_prev.Gyro[i].Z)})
 			}
 		}
 		////////////////////Temperature
 		if strings.Contains(selected, "t") {
-			milliseconds := 0
-			tempCsv = append(tempCsv, []string{strconv.Itoa(milliseconds),floattostr(float64(t_prev.Temp.Temp))})
-		}
-		////////////////////Gps
-		if strings.Contains(selected, "g") {
-			for i, _ := range t_prev.Gps {
-				if (initialMilliseconds <= 0) && (t_prev.Gps[i].TS > 0) { initialMilliseconds = float64(t_prev.Gps[i].TS) / 1000 }
-				milliseconds := (float64(t_prev.Gps[i].TS) / 1000) - initialMilliseconds
-				gpsCsv = append(gpsCsv, []string{floattostr(milliseconds),floattostr(t_prev.Gps[i].Latitude),floattostr(t_prev.Gps[i].Longitude),floattostr(t_prev.Gps[i].Altitude),floattostr(t_prev.Gps[i].Speed),floattostr(t_prev.Gps[i].Speed3D),int64tostr(t_prev.Gps[i].TS),strconv.Itoa(int(t_prev.GpsAccuracy.Accuracy)),strconv.Itoa(int(t_prev.GpsFix.F))})
-			}
+			milliseconds := seconds*1000
+			tempCsv = append(tempCsv, []string{floattostr(milliseconds),floattostr(float64(t_prev.Temp.Temp))})
 		}
 	    //////////////////////////////////////////////////////////////////////////////////
 		

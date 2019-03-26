@@ -31,7 +31,6 @@ If `-s` is not specified, it will export all available data. More options could 
 
 ToDo:
 
-- Use GPS Time (when available) to set the milliseconds to the Accel, Gyro and Temp CSV files, so that they sync properly.
 - Add other sensors to JSON export
 
 This was my first ~~repository~~ fork. Any possible wrong practices are not intentional.
