@@ -1,6 +1,7 @@
 # GoPro Metadata Format Parser + GPMD2CSV
 
 Example of what can be achieved: https://youtu.be/bg8B0Hl_au0
+User friendly and cross-platform tool for extracting the telemetry: https://tailorandwayne.com/gopro-telemetry-extractor/
 
 I forked stilldavid's project ( https://github.com/stilldavid/gopro-utils ) to achieve 3 things:
 
