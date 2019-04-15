@@ -117,13 +117,14 @@ func main() {
 
 		///////////////////////////////////////////////////////////////////Modified to save CSV
 		////////////////////Gps
-		if strings.Contains(selected, "g") {
-			for i, _ := range t_prev.Gps {
-				if (initialMilliseconds <= 0) && (t_prev.Gps[i].TS > 0) { initialMilliseconds = float64(t_prev.Gps[i].TS) / 1000 }
-				milliseconds := (float64(t_prev.Gps[i].TS) / 1000) - initialMilliseconds
-				if i == 0 {	//if GPS time we can use it for other sensors, otherwise keep seconds guess
-					seconds = milliseconds/1000
-				}
+		
+		for i, _ := range t_prev.Gps {
+			if (initialMilliseconds <= 0) && (t_prev.Gps[i].TS > 0) { initialMilliseconds = float64(t_prev.Gps[i].TS) / 1000 }
+			milliseconds := (float64(t_prev.Gps[i].TS) / 1000) - initialMilliseconds
+			if i == 0 {	//if GPS time we can use it for other sensors, otherwise keep seconds guess
+				seconds = milliseconds/1000
+			}
+			if strings.Contains(selected, "g") {
 				gpsCsv = append(gpsCsv, []string{floattostr(milliseconds),floattostr(t_prev.Gps[i].Latitude),floattostr(t_prev.Gps[i].Longitude),floattostr(t_prev.Gps[i].Altitude),floattostr(t_prev.Gps[i].Speed),floattostr(t_prev.Gps[i].Speed3D),int64tostr(t_prev.Gps[i].TS),strconv.Itoa(int(t_prev.GpsAccuracy.Accuracy)),strconv.Itoa(int(t_prev.GpsFix.F))})
 			}
 		}
