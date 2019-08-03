@@ -38,7 +38,7 @@ ToDo:
 
 This was my first ~~repository~~ fork. Any possible wrong practices are not intentional.
 
-Here are some other projects of mine that you might find interesting: https://prototyping.barcelona
+If you liked this you might like some of my [app prototyping](https://prototyping.barcelona).
 
 Here continues Stilldavid's work:
 ##############################################################################################################
