@@ -38,7 +38,7 @@ ToDo:
 
 This was my first ~~repository~~ fork. Any possible wrong practices are not intentional.
 
-Here are some other projects of mine that you might find interesting: http://tailorandwayne.com/coding-projects/
+Here are some other projects of mine that you might find interesting: https://prototyping.barcelona
 
 Here continues Stilldavid's work:
 ##############################################################################################################
