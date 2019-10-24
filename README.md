@@ -3,6 +3,7 @@
 **I have recently switched my efforts to a more comprehensive [JavaScript version of these tools](https://github.com/JuanIrache/gopro-telemetry), but feel free to send a PR if you think you can improve this one**
 
 Examples of what can be achieved: https://www.youtube.com/playlist?list=PLgoeWSWqXedK_TbrZXg7L926Kzb-g_CXz
+
 User friendly and cross-platform tool for extracting the telemetry: https://tailorandwayne.com/gopro-telemetry-extractor/
 
 I forked stilldavid's project ( https://github.com/stilldavid/gopro-utils ) to achieve 3 things:
