@@ -4,7 +4,7 @@
 
 Examples of what can be achieved: https://www.youtube.com/playlist?list=PLgoeWSWqXedK_TbrZXg7L926Kzb-g_CXz
 
-User friendly and cross-platform tool for extracting the telemetry: https://tailorandwayne.com/gopro-telemetry-extractor/
+User friendly and cross-platform tool for extracting the telemetry: https://goprotelemetryextractor.com/free
 
 I forked stilldavid's project ( https://github.com/stilldavid/gopro-utils ) to achieve 3 things:
 
