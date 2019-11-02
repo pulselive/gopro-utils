@@ -1,4 +1,6 @@
-===============INSTRUCTIONS=============== v3.28
+===============INSTRUCTIONS=============== v3.29
+
+For a more user friendly and comprehensive telemetry extraction tool please use https://goprotelemetryextractor.com/free/
 
 Just drop your GoPro Hero5 (or later) files GPMD2VS.bat. A "GoPro Metadata Extract" folder will appear alongside your files with your data in multiple file formats.
 
