@@ -144,6 +144,7 @@ func Read(f io.Reader) (*TELEM, error) {
 					g := GPSU{}
 					g.Parse(value)
 					t.Time = g
+					fmt.Printf("INNER: %s", t.Time.Time)
 				} else if "ACCL" == label_string {
 					a := ACCL{}
 					err := a.Parse(value, &s)
