@@ -1,7 +1,6 @@
 package telemetry
 
 import (
-	"fmt"
 	"io"
 	"io/ioutil"
 )
@@ -77,7 +76,7 @@ func Read(f io.Reader) (*TELEM, error) {
 
 		if !stringInSlice(label_string, labels) {
 			//skip label if not recognised, instead of stopping
-			fmt.Printf("Could not find label in list: %s (%x)\n", label, label)
+			//fmt.Printf("Could not find label in list: %s (%x)\n", label, label)
 			//return nil, err 
 		}
 
