@@ -65,6 +65,11 @@ func Read(f io.Reader) (*TELEM, error) {
 	// the full telemetry for this period
 	t := &TELEM{}
 
+	// preallocate space for the typical frequency of expected data
+	t.Gps = make([]GPS5, 0, 20)
+	t.Accl = make([]ACCL, 0, 210)
+	t.Gyro = make([]GYRO, 0, 410)
+
 	for {
 		// pick out the label
 		read, err := io.ReadFull(f, label)
@@ -178,26 +183,6 @@ func Read(f io.Reader) (*TELEM, error) {
 						return nil, err
 					}
 					t.GpsFix = g
-				} else if "UNIT" == label_string {
-					// this is a string of units like "rad/s", not sure if it changes
-					//fmt.Printf("\tUN: %s\n", value)
-				} else if "SIUN" == label_string {
-					// this is the SI unit - also not sure if it changes
-
-					//fmt.Printf("\tSI: %s\n", value)
-				} else if "DVNM" == label_string {
-					// device name, "Camera"
-					//fmt.Printf("\tvals: %s\n", value)
-				} else if "TICK" == label_string {
-					//fmt.Printf("\tvals: %s\n", value)
-				} else if "STNM" == label_string {
-					//fmt.Printf("\tvals: %s\n", value)
-				} else if "ISOG" == label_string {
-					//fmt.Printf("\tvals: %s\n", value)
-				} else if "SHUT" == label_string {
-					//fmt.Printf("\tvals: %s\n", value)
-				} else {
-					//fmt.Printf("\tvalue is %v\n", value)
 				}
 			}
 		}
